@@ -6,38 +6,46 @@ Dependencies: tensorflow 1.0 and keras 2.0
 Usage: python3 dcgan_mnist.py
 '''
 
-import numpy as np
 import time
+import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Reshape
 from keras.layers import Conv2D, Conv2DTranspose, UpSampling2D
-from keras.layers import LeakyReLU, Dropout
+from keras.layers import LeakyReLU, DGropout
 from keras.layers import BatchNormalization
 from keras.optimizers import Adam, RMSprop
-
 import matplotlib.pyplot as plt
 
 class ElapsedTimer(object):
+    """ Elapsed Timer.
+
+        Deal with the elapsed time.
+    """
+
     def __init__(self):
         self.start_time = time.time()
-    def elapsed(self,sec):
+
+    def elapsed(self, sec):
+        """Change second to min or hour when needed."""
         if sec < 60:
             return str(sec) + " sec"
         elif sec < (60 * 60):
             return str(sec / 60) + " min"
         else:
             return str(sec / (60 * 60)) + " hr"
+
     def elapsed_time(self):
-        print("Elapsed: %s " % self.elapsed(time.time() - self.start_time) )
+        """Compute the elapsed time."""
+        print("Elapsed: %s " % self.elapsed(time.time() - self.start_time))
 
 class DCGAN(object):
     def __init__(self, img_rows=28, img_cols=28, channel=1):
-
         self.img_rows = img_rows
         self.img_cols = img_cols
         self.channel = channel
+
         self.D = None   # discriminator
         self.G = None   # generator
         self.AM = None  # adversarial model
